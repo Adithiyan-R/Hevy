@@ -240,6 +240,7 @@ app.post('/user/login', function (req, res) { return __awaiter(void 0, void 0, v
                 })];
             case 1:
                 userPresent = _a.sent();
+                console.log(userPresent);
                 if (!userPresent) return [3 /*break*/, 3];
                 return [4 /*yield*/, jwt.sign(req.body.email, userSecretKey)];
             case 2:
@@ -250,6 +251,26 @@ app.post('/user/login', function (req, res) { return __awaiter(void 0, void 0, v
                 res.status(403).json({ message: "user login failed" });
                 _a.label = 4;
             case 4: return [2 /*return*/];
+        }
+    });
+}); });
+app.post('/user/auth', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var token, userAuthenticated;
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+                return [4 /*yield*/, jwt.verify(token, userSecretKey)];
+            case 1:
+                userAuthenticated = _b.sent();
+                if (userAuthenticated) {
+                    res.status(200).send("authenticated");
+                }
+                else {
+                    res.status(403).json({ message: "user authentication failed" });
+                }
+                return [2 /*return*/];
         }
     });
 }); });
@@ -322,7 +343,7 @@ app.post('/user/addRoutine', authenticateUser, function (req, res) { return __aw
     });
 }); });
 app.put('/user/updateRoutine/:id', authenticateUser, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var routineUpdated, workoutArray, i, workoutPresent, workoutUpdated, setArray, j, setPresent, setUpdated, newSet, allSets, i_1, setDelete, workoutAdded, j, setAdded, allWorkoutsId, i, deleteWorkout;
+    var routineUpdated, workoutArray, i, workoutPresent, a, workoutUpdated, setArray, j, setPresent, setUpdated, newSet, allSets, i_1, setDelete, workoutAdded, j, setAdded, allWorkoutsId, i, deleteWorkout;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, prisma.routine.update({
@@ -349,6 +370,7 @@ app.put('/user/updateRoutine/:id', authenticateUser, function (req, res) { retur
             case 3:
                 workoutPresent = _a.sent();
                 if (!workoutPresent) return [3 /*break*/, 17];
+                a = 9;
                 workoutArray.push(workoutPresent.id);
                 return [4 /*yield*/, prisma.workout.update({
                         where: {

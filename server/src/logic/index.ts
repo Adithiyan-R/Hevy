@@ -189,6 +189,8 @@ app.post('/user/login', async (req : customRequest, res : Response)=>{
         }
     })
 
+    console.log(userPresent);
+
     if(userPresent)
     {
         const token = await jwt.sign(req.body.email,userSecretKey);
@@ -198,6 +200,24 @@ app.post('/user/login', async (req : customRequest, res : Response)=>{
     {
         res.status(403).json({message : "user login failed"});
     }
+
+})
+
+app.post('/user/auth', async (req : customRequest, res : Response)=>{
+
+    const token = req.headers.authorization?.split(' ')[1];
+
+    const userAuthenticated = await jwt.verify(token,userSecretKey);
+
+    if(userAuthenticated)
+    {
+        res.status(200).send("authenticated");
+    }
+    else
+    {
+        res.status(403).json({message : "user authentication failed"});
+    }
+
 
 })
 
@@ -279,8 +299,6 @@ app.put('/user/updateRoutine/:id', authenticateUser, async (req : customRequest,
 
             if(workoutPresent)
             {
-
-                a = a/2;
 
                 var a = 9;
 
