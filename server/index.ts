@@ -7,15 +7,14 @@ import { Request, Response , NextFunction, response} from 'express';
 
 const app = express();
 const prisma = new PrismaClient();
-const port = 3000;
+const port = process.env.port || 3000;
 
 const adminSecretKey = "admin123";
 const userSecretKey = "user123";
 
 app.use(
     cors({
-      origin: 'https://hevy.vercel.app',
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      origin: '*',
     })
   );
 
