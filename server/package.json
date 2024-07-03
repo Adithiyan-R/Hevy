@@ -17,7 +17,7 @@
     "typescript": "^5.4.2"
   },
   "scripts": {
-    "build": "npx prisma generate && your-other-build-commands"
+    "build": "npx prisma generate && npm run build"
   }
 }
 
