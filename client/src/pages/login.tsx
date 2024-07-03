@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import '../index.css';
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { authenticated } from "@/store/atoms/authenticated";
 
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [authenticatedValue,setAuthenticatedValue] = useRecoilState(authenticated);
+  const setAuthenticatedValue = useSetRecoilState(authenticated);
 
   async function auth(){
       const response: AxiosResponse = await axios.post("http://localhost:3000/user/auth",

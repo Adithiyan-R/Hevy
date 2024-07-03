@@ -3,13 +3,13 @@ import axios, { AxiosResponse } from "axios";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 export function HomePage() {
 
   const navigate = useNavigate();
 
-  const [authenticatedValue,setAuthenticatedValue] = useRecoilState(authenticated);
+  const setAuthenticatedValue = useSetRecoilState(authenticated);
 
   async function auth(){
     

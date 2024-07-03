@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import '../index.css';
 import { Input } from "@/components/ui/input";
 import { authenticated } from "@/store/atoms/authenticated";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { cn } from "@/utils/cn";
 import { Label } from "@/components/ui/label"
 
@@ -15,7 +15,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [authenticatedValue,setAuthenticatedValue] = useRecoilState(authenticated);
+  const setAuthenticatedValue = useSetRecoilState(authenticated);
 
   async function auth(){
       const response: AxiosResponse = await axios.post("http://localhost:3000/user/auth",
