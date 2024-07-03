@@ -19,7 +19,7 @@ function AllRoutine() {
   async function getAllRoutines() {
 
     try {
-      const response: AxiosResponse = await axios.get("http://localhost:3000/user/allRoutines",
+      const response: AxiosResponse = await axios.get("https://hevy-server.vercel.app/user/allRoutines",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem('jwt')
@@ -106,7 +106,7 @@ function DisplayRoutine(props: any) {
   async function deleteRoutineHandler() {
 
     try {
-      const response = await axios.delete("http://localhost:3000/user/deleteRoutine/" + props.id,
+      const response = await axios.delete("https://hevy-server.vercel.app/user/deleteRoutine/" + props.id,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem('jwt')

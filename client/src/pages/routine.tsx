@@ -30,7 +30,7 @@ function Routine() {
     async function getRountine() {
 
         try {
-            const response = await axios.get("http://localhost:3000/user/routine/" + location.state.id,
+            const response = await axios.get("https://hevy-server.vercel.app/user/routine/" + location.state.id,
                 {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem('jwt')
@@ -60,7 +60,7 @@ function Routine() {
 
             console.log(routine);
 
-            const response = await axios.put("http://localhost:3000/user/updateRoutine/" + location.state.id,
+            const response = await axios.put("https://hevy-server.vercel.app/user/updateRoutine/" + location.state.id,
                 {
                     name,
                     workout
@@ -89,7 +89,7 @@ function Routine() {
 
         try {
 
-            const response = await axios.get("http://localhost:3000/user/getAllExercises",
+            const response = await axios.get("https://hevy-server.vercel.app/user/getAllExercises",
                 {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem('jwt')

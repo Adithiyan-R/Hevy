@@ -18,7 +18,7 @@ function Signup() {
   const setAuthenticatedValue = useSetRecoilState(authenticated);
 
   async function auth(){
-      const response: AxiosResponse = await axios.post("http://localhost:3000/user/auth",
+      const response: AxiosResponse = await axios.post("https://hevy-server.vercel.app/user/auth",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem('jwt')
@@ -40,7 +40,7 @@ function Signup() {
 
       console.log("reached");
 
-      const response: AxiosResponse = await axios.post("http://localhost:3000/user/signup",
+      const response: AxiosResponse = await axios.post("https://hevy-server.vercel.app/user/signup",
         {
           name,
           email,

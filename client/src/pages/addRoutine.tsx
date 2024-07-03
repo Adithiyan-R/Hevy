@@ -29,7 +29,7 @@ function AddRoutine() {
 
         try {
 
-            const response = await axios.post("http://localhost:3000/user/addRoutine",
+            const response = await axios.post("https://hevy-server.vercel.app/user/addRoutine",
             {
                 name,
                 workout
@@ -63,7 +63,7 @@ function AddRoutine() {
 
         try {
 
-            const response = await axios.get("http://localhost:3000/user/getAllExercises",
+            const response = await axios.get("https://hevy-server.vercel.app/user/getAllExercises",
                 {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem('jwt')
