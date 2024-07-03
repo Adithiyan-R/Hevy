@@ -8,7 +8,6 @@ import Login from './pages/login';
 import Signup from './pages/signup';
 import Navbar from './pages/navbar';
 import { HomePage } from './pages/homePage';
-import { useEffect } from 'react';
 
 function App() {
 
