@@ -30,22 +30,27 @@ function AddRoutine() {
         try {
 
             const response = await axios.post("http://localhost:3000/user/addRoutine",
-                {
-                    name,
-                    workout
-                },
-                {
-                    headers: {
-                        Authorization: "Bearer " + localStorage.getItem('jwt')
-                    }
-                })
+            {
+                name,
+                workout
+            },
+            {
+                headers: {
+                   Authorization: "Bearer " + localStorage.getItem('jwt')
+                }
+            })
 
-            console.log(response.data);
+            if(response.data==="routine with given name is already present")
+            {
+                alert("routine with this name is already present");
+            }
+            else
+            {
+                navigate('/routines');
 
-            navigate('/routines');
-
-            setName("");
-            setWorkout([]);
+                setName("");
+                setWorkout([]);
+            }
 
         }
         catch (e) {

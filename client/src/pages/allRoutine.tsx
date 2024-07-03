@@ -44,9 +44,11 @@ function AllRoutine() {
 
   useEffect(() => {
 
-    console.log('reached');
+    if(authenticatedValue===true)
+    {
+      getAllRoutines();
+    }
 
-    getAllRoutines();
   }, [])
 
   return (
@@ -122,13 +124,6 @@ function DisplayRoutine(props: any) {
   }
 
   return (
-    // <div className="border bg-white rounded-lg p-5 shadow-xl w-80 max-w-80 flex-grow">
-    //     <h5 className="font-bold text-xl flex-grow break-words">{props.name}</h5>
-    //     <div className="flex justify-between mt-7">
-    //         <button className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 text-white rounded-md h-10 w-30 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"onClick={viewRoutineHandler}>view</button>
-    //         <button className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]" onClick={deleteRoutineHandler}>delete</button>
-    //     </div>
-    // </div>
     <Card className="max-w-60 border-none">
       <CardContent className="p-6 flex flex-col items-center justify-between h-full ">
         <div className="text-center">

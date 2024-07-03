@@ -53,7 +53,7 @@ function Signup() {
 
       setAuthenticatedValue(true);
 
-      navigate('/user/routines');
+      navigate('/routines');
 
     }
     catch (e) {

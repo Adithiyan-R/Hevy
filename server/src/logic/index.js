@@ -261,6 +261,7 @@ app.post('/user/auth', function (req, res) { return __awaiter(void 0, void 0, vo
         switch (_b.label) {
             case 0:
                 token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+                if (!token) return [3 /*break*/, 2];
                 return [4 /*yield*/, jwt.verify(token, userSecretKey)];
             case 1:
                 userAuthenticated = _b.sent();
@@ -268,9 +269,13 @@ app.post('/user/auth', function (req, res) { return __awaiter(void 0, void 0, vo
                     res.status(200).send("authenticated");
                 }
                 else {
-                    res.status(403).json({ message: "user authentication failed" });
+                    res.status(200).send("not authenticated");
                 }
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                res.status(200).send("not authenticated");
+                _b.label = 3;
+            case 3: return [2 /*return*/];
         }
     });
 }); });
@@ -287,35 +292,45 @@ app.get('/user/getAllExercises', authenticateUser, function (req, res) { return 
     });
 }); });
 app.post('/user/addRoutine', authenticateUser, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var routineAdded, i, workoutAdded, j, setAdded;
+    var isRoutinePresent, routineAdded, i, workoutAdded, j, setAdded;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, prisma.routine.create({
+            case 0: return [4 /*yield*/, prisma.routine.findUnique({
+                    where: {
+                        name: req.body.name
+                    },
+                })];
+            case 1:
+                isRoutinePresent = _a.sent();
+                if (!isRoutinePresent) return [3 /*break*/, 2];
+                res.status(200).send("routine with given name is already present");
+                return [3 /*break*/, 12];
+            case 2: return [4 /*yield*/, prisma.routine.create({
                     data: {
                         name: req.body.name,
                         userId: req.userId
                     }
                 })];
-            case 1:
+            case 3:
                 routineAdded = _a.sent();
-                if (!routineAdded) return [3 /*break*/, 9];
+                if (!routineAdded) return [3 /*break*/, 11];
                 i = 0;
-                _a.label = 2;
-            case 2:
-                if (!(i < req.body.workout.length)) return [3 /*break*/, 8];
+                _a.label = 4;
+            case 4:
+                if (!(i < req.body.workout.length)) return [3 /*break*/, 10];
                 return [4 /*yield*/, prisma.workout.create({
                         data: {
                             name: req.body.workout[i].name,
                             routineId: routineAdded.id
                         }
                     })];
-            case 3:
+            case 5:
                 workoutAdded = _a.sent();
-                if (!workoutAdded) return [3 /*break*/, 7];
+                if (!workoutAdded) return [3 /*break*/, 9];
                 j = 0;
-                _a.label = 4;
-            case 4:
-                if (!(j < req.body.workout[i].set.length)) return [3 /*break*/, 7];
+                _a.label = 6;
+            case 6:
+                if (!(j < req.body.workout[i].set.length)) return [3 /*break*/, 9];
                 return [4 /*yield*/, prisma.set.create({
                         data: {
                             weight: req.body.workout[i].set[j].weight,
@@ -323,22 +338,22 @@ app.post('/user/addRoutine', authenticateUser, function (req, res) { return __aw
                             workoutId: workoutAdded.id
                         }
                     })];
-            case 5:
-                setAdded = _a.sent();
-                _a.label = 6;
-            case 6:
-                j++;
-                return [3 /*break*/, 4];
             case 7:
-                i++;
-                return [3 /*break*/, 2];
+                setAdded = _a.sent();
+                _a.label = 8;
             case 8:
-                res.status(201).json({ message: "routine successfully created", routineAdded: routineAdded });
-                return [3 /*break*/, 10];
+                j++;
+                return [3 /*break*/, 6];
             case 9:
+                i++;
+                return [3 /*break*/, 4];
+            case 10:
+                res.status(201).json({ message: "routine successfully created", routineAdded: routineAdded });
+                return [3 /*break*/, 12];
+            case 11:
                 res.status(403).json({ message: "add routine failed" });
-                _a.label = 10;
-            case 10: return [2 /*return*/];
+                _a.label = 12;
+            case 12: return [2 /*return*/];
         }
     });
 }); });
@@ -530,7 +545,7 @@ app.delete('/user/deleteRoutine/:id', authenticateUser, function (req, res) { re
         switch (_a.label) {
             case 0: return [4 /*yield*/, prisma.routine.delete({
                     where: {
-                        // unary operator used to typecast -> string to number
+                        // unary operator (+) used to typecast -> string to number
                         id: +req.params.id,
                         userId: req.userId
                     }

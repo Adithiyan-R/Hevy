@@ -9,8 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label"
 import { cn } from "@/utils/cn";
 
-"use client";
-
 function Login() {
 
   const [email, setEmail] = useState("");
@@ -19,7 +17,6 @@ function Login() {
   const [authenticatedValue,setAuthenticatedValue] = useRecoilState(authenticated);
 
   async function auth(){
-    console.log("okkk")
       const response: AxiosResponse = await axios.post("http://localhost:3000/user/auth",
         {
           headers: {

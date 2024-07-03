@@ -206,18 +206,24 @@ app.post('/user/login', async (req : customRequest, res : Response)=>{
 app.post('/user/auth', async (req : customRequest, res : Response)=>{
 
     const token = req.headers.authorization?.split(' ')[1];
-
-    const userAuthenticated = await jwt.verify(token,userSecretKey);
-
-    if(userAuthenticated)
+    
+    if(token)
     {
-        res.status(200).send("authenticated");
+        const userAuthenticated = await jwt.verify(token,userSecretKey);
+
+        if(userAuthenticated)
+        {
+            res.status(200).send("authenticated");
+        }
+        else
+        {
+            res.status(200).send("not authenticated");
+        }
     }
     else
     {
-        res.status(403).json({message : "user authentication failed"});
-    }
-
+        res.status(200).send("not authenticated");
+    }  
 
 })
 
@@ -231,44 +237,57 @@ app.get('/user/getAllExercises', authenticateUser, async (req : customRequest, r
 
 app.post('/user/addRoutine', authenticateUser, async (req : customRequest, res : Response)=>{
 
-    const routineAdded = await prisma.routine.create({
-        data : {
-            name : req.body.name,
-            userId : req.userId
-        }
+    const isRoutinePresent  = await prisma.routine.findUnique({
+        where : {
+            name : req.body.name
+        },
     })
 
-    if(routineAdded)
+    if(isRoutinePresent)
     {
-        for(let i=0;i<req.body.workout.length;i++)
-        {
-            const workoutAdded = await prisma.workout.create({
-                data : {
-                    name : req.body.workout[i].name,
-                    routineId : routineAdded.id
-                }
-            })
-
-            if(workoutAdded)
-            {
-                for(let j=0;j<req.body.workout[i].set.length;j++)
-                {
-                    const setAdded = await prisma.set.create({
-                        data : {
-                            weight : req.body.workout[i].set[j].weight,
-                            count : req.body.workout[i].set[j].count,
-                            workoutId : workoutAdded.id
-                        }
-                    })
-                }
-            }
-        }
-
-        res.status(201).json({message : "routine successfully created", routineAdded});
+        res.status(200).send("routine with given name is already present");
     }
     else
     {
-        res.status(403).json({message : "add routine failed"});
+        const routineAdded = await prisma.routine.create({
+            data : {
+                name : req.body.name,
+                userId : req.userId
+            }
+        })
+    
+        if(routineAdded)
+        {
+            for(let i=0;i<req.body.workout.length;i++)
+            {
+                const workoutAdded = await prisma.workout.create({
+                    data : {
+                        name : req.body.workout[i].name,
+                        routineId : routineAdded.id
+                    }
+                })
+    
+                if(workoutAdded)
+                {
+                    for(let j=0;j<req.body.workout[i].set.length;j++)
+                    {
+                        const setAdded = await prisma.set.create({
+                            data : {
+                                weight : req.body.workout[i].set[j].weight,
+                                count : req.body.workout[i].set[j].count,
+                                workoutId : workoutAdded.id
+                            }
+                        })
+                    }
+                }
+            }
+    
+            res.status(201).json({message : "routine successfully created", routineAdded});
+        }
+        else
+        {
+            res.status(403).json({message : "add routine failed"});
+        }
     }
 
 })
@@ -456,7 +475,7 @@ app.delete('/user/deleteRoutine/:id', authenticateUser, async (req :customReques
 
     const deletedRoutine = await prisma.routine.delete({
         where : {
-            // unary operator used to typecast -> string to number
+            // unary operator (+) used to typecast -> string to number
             id : +req.params.id,
             userId : req.userId
         }
