@@ -12,12 +12,7 @@ const port = 3000;
 const adminSecretKey = "admin123";
 const userSecretKey = "user123";
 
-app.use(
-    cors({
-      origin: 'https://hevy-client.vercel.app',
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    })
-  );
+app.use(cors());
 
 app.use(bodyParser.json());
 
