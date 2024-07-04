@@ -170,7 +170,6 @@ app.post('/user/signup', async (req : customRequest, res : Response)=>{
         const userAdded = await prisma.user.create({
             data : req.body
         })
-
         if(userAdded)
         {
             const token = await jwt.sign(req.body.email,userSecretKey);

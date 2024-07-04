@@ -43,10 +43,12 @@ var bodyParser = require('body-parser');
 var client_1 = require("@prisma/client");
 var app = express();
 var prisma = new client_1.PrismaClient();
-var port = 3000;
+var port = process.env.port || 3000;
 var adminSecretKey = "admin123";
 var userSecretKey = "user123";
-app.use(cors());
+app.use(cors({
+    origin: '*',
+}));
 app.use(bodyParser.json());
 function authenticateAdmin(req, res, next) {
     var _a;
@@ -200,21 +202,28 @@ app.post('/user/signup', function (req, res) { return __awaiter(void 0, void 0, 
     var userPresent, userAdded, token;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, prisma.user.findUnique({
-                    where: {
-                        email: req.body.email
-                    }
-                })];
+            case 0:
+                console.log("rec1");
+                return [4 /*yield*/, prisma.user.findUnique({
+                        where: {
+                            email: req.body.email
+                        }
+                    })];
             case 1:
                 userPresent = _a.sent();
+                console.log("rec2");
                 if (!userPresent) return [3 /*break*/, 2];
+                console.log("rec3");
                 res.status(403).json({ mesaage: "user adready present" });
                 return [3 /*break*/, 6];
-            case 2: return [4 /*yield*/, prisma.user.create({
-                    data: req.body
-                })];
+            case 2:
+                console.log("rec4");
+                return [4 /*yield*/, prisma.user.create({
+                        data: req.body
+                    })];
             case 3:
                 userAdded = _a.sent();
+                console.log("rec5");
                 if (!userAdded) return [3 /*break*/, 5];
                 return [4 /*yield*/, jwt.sign(req.body.email, userSecretKey)];
             case 4:

@@ -38,8 +38,6 @@ function Signup() {
 
     try {
 
-      console.log("reached");
-
       const response: AxiosResponse = await axios.post("https://hevy-server.vercel.app/user/signup",
         {
           name,
